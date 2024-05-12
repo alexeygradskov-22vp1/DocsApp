@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузка</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label for="number">Номер документа</label>
+        <input type="text" name="number" id="number">
+    </div>
+    <div>
+        <label for="type">Тип документа</label>
+        <select name="type" id="type">
+            <option value="Информационный">Информационный</option>
+            <option value="Организационный">Организационный</option>
+            <option value="Распорядительный">Распорядительный</option>
+        </select>
+    </div>
+    <div>
+        <label for="date">Дата</label>
+        <input type="date" name="date" id="date">
+    </div>
+    <div>
+        <label for="doc">Выберите файл</label>
+        <input type="file" name="doc" id="doc">
+    </div>
+    <div>
+        <input type="submit" value="Загрузить">
+    </div>
+</form>
+</body>
+</html>

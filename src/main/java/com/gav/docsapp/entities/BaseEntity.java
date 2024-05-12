@@ -1,2 +1,4 @@
-package com.gav.docsapp.entities;public class BaseEntity {
+package com.gav.docsapp.entities;
+
+public class BaseEntity {
 }
