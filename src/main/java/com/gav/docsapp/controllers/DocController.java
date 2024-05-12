@@ -69,7 +69,7 @@ public class DocController {
         try {
             document.setDoc(doc.getBytes());
             _docService.add(document);
-        } catch (IOException e) {
+        } catch (IOException|IllegalArgumentException e) {
             return "create";
         }
         return "redirect:/api/docs/";

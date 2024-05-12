@@ -13,8 +13,9 @@ public class DocService extends BaseService<Document, DocRepository> {
         super(docRepository);
     }
     @Override
-    public void add(Document elem) {
-        this._repository.save(elem);
+    public void add(Document elem) throws IllegalArgumentException {
+        if (!_repository.existsByNumber(elem.getNumber()))this._repository.save(elem);
+        else throw new IllegalArgumentException("Уже существует");
     }
 
     @Override
