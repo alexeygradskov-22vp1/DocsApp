@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body style=" width: 100%;
+    height: 100%;
+    position: absolute;">
+<p th:if="${not #strings.isEmpty(errorMessage)}" th:text="errorMessage"></p>
+<div style="position: absolute;
+    top: 50%;
+    left: 40%; width: 100%">
+    <p th:if="${#lists.isEmpty(listOfDocs)}" style="color: red">Список пуст</p>
+    <table th:if="${not #lists.isEmpty(listOfDocs)}" style="border: 2px grey solid;border-radius: 10px;width: 600px">
+        <tr th:each="doc : ${listOfDocs}">
+            <td style="border-left: 1px grey solid" th:text="${doc.number}"></td>
+            <td style="border-left: 1px grey solid" th:text="${doc.type}"></td>
+            <td style="border-left: 1px grey solid" th:text="${doc.date}"></td>
+            <td style="border-left: 1px grey solid;border-right: 1px grey solid" ><a th:text="${doc.fileName}" th:href="@{'/api/docs/'+${doc.getId()}+'/download'}"></a></td>
+        </tr>
+    </table>
+    <a th:href="@{/api/docs/upload}">Добавить запись</a>
+</div>
+
+<form th:action="@{/api/docs/}">
+<label >Фильтр по дате</label>
+    <input hidden="hidden" th:name="filterBy" value="Date">
+    <input type="date" th:name="filterValue">
+    <label >Поиск по номеру</label>
+    <input type="text" th:name="search">
+    <input type="submit">
+</form>
+</body>
+</html>
