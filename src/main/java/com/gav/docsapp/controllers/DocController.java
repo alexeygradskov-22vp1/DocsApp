@@ -39,29 +39,37 @@ public class DocController {
 
         try {
 
-            if (filterBy.isPresent() && filterValue.isPresent()&&!filterValue.get().isEmpty()) {
+            if (filterBy.isPresent() && filterValue.isPresent() && !filterValue.get().isEmpty()) {
                 result = result.filter(DocType.valueOf(filterBy.get()), filterValue.get());
                 model.addAttribute("date", filterValue.get());
             }
             if (orderBy.isPresent()) result = result.sort(DocType.valueOf(orderBy.get()));
-            if (search.isPresent()) {result = result.search(search.get()); model.addAttribute("search", search.get());}
+            if (search.isPresent()) {
+                result = result.search(search.get());
+                model.addAttribute("search", search.get());
+            }
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
         model.addAttribute("listOfDocs", result.getDocs());
         return "Main";
     }
+
     @RequestMapping("/upload")
-    private String getUploadPage(){
+    private String getUploadPage() {
         return "create";
     }
 
     @PostMapping(value = "/upload")
     private String add(@RequestParam(name = "number") String number,
-                                  @RequestParam(name = "type") String type,
-                                  @RequestParam(name = "date") String date,
-                                  @RequestParam(name = "doc") MultipartFile doc,
+                       @RequestParam(name = "type") String type,
+                       @RequestParam(name = "date") String date,
+                       @RequestParam(name = "doc") MultipartFile doc,
                        Model model) {
+        if (doc.getSize() > 10485000) {
+            model.addAttribute("errorMessage", "Размер файла слишком большой");
+            return "create";
+        }
         Document document = new Document();
         document.setDate(LocalDate.parse(date));
         document.setType(type);
@@ -74,8 +82,7 @@ public class DocController {
             model.addAttribute("errorMessage",
                     "Неизвестная ошибка с файлом");
             return "create";
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage",
                     "Документ с таким номером уже существует");
             return "create";
@@ -91,6 +98,7 @@ public class DocController {
                                      @RequestParam(name = "doc") MultipartFile doc) {
 
         Document document = new Document();
+
         document.setId(docId);
         document.setDate(LocalDate.parse(date));
         document.setType(type);
@@ -120,7 +128,7 @@ public class DocController {
         if (document.isPresent()) {
             InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(document.get().getDoc()));
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+document.get().getFileName());
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.get().getFileName());
             return ResponseEntity.ok().headers(headers)
                     .contentLength(document.get().getDoc().length)
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
