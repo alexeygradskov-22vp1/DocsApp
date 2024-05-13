@@ -7,8 +7,10 @@
 <body>
 <form method="post" enctype="multipart/form-data">
     <div>
+
         <label for="number">Номер документа</label>
         <input type="text" name="number" id="number">
+        <p style="color: red" th:if="${not #strings.isEmpty(errorMessage)}" th:text="${errorMessage}"></p>
     </div>
     <div>
         <label for="type">Тип документа</label>

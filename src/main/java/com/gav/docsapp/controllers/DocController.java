@@ -41,9 +41,10 @@ public class DocController {
 
             if (filterBy.isPresent() && filterValue.isPresent()&&!filterValue.get().isEmpty()) {
                 result = result.filter(DocType.valueOf(filterBy.get()), filterValue.get());
+                model.addAttribute("date", filterValue.get());
             }
             if (orderBy.isPresent()) result = result.sort(DocType.valueOf(orderBy.get()));
-            if (search.isPresent()) result = result.search(search.get());
+            if (search.isPresent()) {result = result.search(search.get()); model.addAttribute("search", search.get());}
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
@@ -69,7 +70,14 @@ public class DocController {
         try {
             document.setDoc(doc.getBytes());
             _docService.add(document);
-        } catch (IOException|IllegalArgumentException e) {
+        } catch (IOException e) {
+            model.addAttribute("errorMessage",
+                    "Неизвестная ошибка с файлом");
+            return "create";
+        }
+        catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage",
+                    "Документ с таким номером уже существует");
             return "create";
         }
         return "redirect:/api/docs/";
