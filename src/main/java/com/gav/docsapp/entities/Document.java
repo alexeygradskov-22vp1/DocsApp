@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "docs")
+@Table(name = "docs", indexes = @Index(columnList = "number"))
 @Getter
 @Setter
 public class Document extends BaseEntity {
@@ -21,6 +21,7 @@ public class Document extends BaseEntity {
     private Long id;
 
     @Column(unique = true, name = "number")
+
     private String number;
     @Column(name = "type")
     private String type;

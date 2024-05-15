@@ -90,7 +90,7 @@ public class DocController {
         return "redirect:/api/docs/";
     }
 
-    @PutMapping("/{docId}/update")
+    @PostMapping("/{docId}/update")
     private ResponseEntity<?> update(@PathVariable(name = "docId") Long docId,
                                      @RequestParam(name = "number") String number,
                                      @RequestParam(name = "type") String type,
@@ -111,6 +111,7 @@ public class DocController {
         }
         return new ResponseEntity<>("Документ сохранен", HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{docId}/delete")
     private ResponseEntity<?> update(@PathVariable(name = "docId") Long docId) {

@@ -31,7 +31,6 @@ public class DocList extends BaseList<Document> {
 
     public DocList filter(DocType docType,String value){
         Predicate<Document> predicate = (x)-> x.getDate().equals(LocalDate.parse(value));
-
         _list = _list.stream().filter(predicate).collect(Collectors.toList());
         return this;
     }
